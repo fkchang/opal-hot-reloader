@@ -5,12 +5,8 @@ require "opal_hot_reloader/server"
 
 options = {:port => 25222, :directories => ['app']}
 OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
-
-  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-    options[:verbose] = v
-  end
-
+  opts.banner = "Usage: opal-hot-reloader [options]"
+  
   opts.on("-p", '--port [INTEGER]', Integer, 'port to run on, defaults to 25222') do |v|
     options[:port] = v
   end
