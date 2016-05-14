@@ -31,7 +31,7 @@ OpalHotReloader.listen(25222, true)
 ```
 #### Start hotloader
 ```
-opal_hot_reload -p 25222 -d dir1,dir2,dir3
+opal_hot_reloader -p 25222 -d dir1,dir2,dir3
 
 Usage: opal-hot-reloader [options]
     -p, --port [INTEGER]             port to run on, defaults to 25222
