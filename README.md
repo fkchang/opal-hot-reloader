@@ -33,7 +33,7 @@ Usage: opal-hot-reloader [options]
     -d, --directories x,y,z          comma separated directories to watch
 ```
 
-For a react.rb Rails you might call it below
+For a react.rb Rails app, the command will be something like the below
 ```
 opal-hot-reloader -d app/assets/javascripts,app/views/components
 ```
