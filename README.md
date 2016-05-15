@@ -20,26 +20,31 @@ Or install it yourself as:
 
 ## Usage
 
-### Sinatra instructions
-#### App setup
-* Add to Gemfile as well as listen 3.1.1
-* Require in server file (i.e. config.ru)
-* Require in an opal file
-```ruby
-require 'opal_hot_reloader'
-OpalHotReloader.listen(25222, true)
+### Server Setup
+
+After adding `gem "opal_hot_loader"` to your gemfile, you must start the server-side part. This will allow websocket connections, and whenever a file is changed it will send it via the socket to listening clients.
+
+To start the server-side of the hotloader:
 ```
-#### Start hotloader
-```
-opal_hot_reloader -p 25222 -d dir1,dir2,dir3
+opal-hot-reloader -p 25222 -d dir1,dir2,dir3
 
 Usage: opal-hot-reloader [options]
     -p, --port [INTEGER]             port to run on, defaults to 25222
     -d, --directories x,y,z          comma separated directories to watch
 ```
-* Enjoy
 
-###
+### Client Setup
+
+Require in an opal file and start listening for changes:
+```ruby
+require 'opal_hot_reloader'
+OpalHotReloader.listen(25222, true)
+```
+
+This will open up a websocket from the client to the server on the given port. The server-side should already be running.
+
+Enjoy!
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
