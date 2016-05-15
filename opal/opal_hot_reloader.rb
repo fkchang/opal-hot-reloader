@@ -40,7 +40,7 @@ class OpalHotReloader
   
   # convenience method to start a listen w/one line
   # @param port [Integer] opal hot reloader port to connect to
-  # @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run
+  # @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code
   def self.listen(port=25222, reactrb=false)
     return if @server
     if reactrb
