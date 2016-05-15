@@ -44,11 +44,16 @@ Require in an opal file (for opal-rails apps application.js.rb is a good place) 
 ```ruby
 require 'opal_hot_reloader'
 
-# @param port [Integer] opal hot reloader port to connect to
-# @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code
+# @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
+# @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code. Defaults to false.
+ run after evaluation the updated code
 OpalHotReloader.listen(25222, true)
 ```
 
+If you are using the default port and your app is not a react.rb app then you can just call:
+```
+OpalHotReloader.listen
+```
 The parameters to OpalHotReloader.listen() are por
 This will open up a websocket from the client to the server on the given port. The server-side should already be running.
 
