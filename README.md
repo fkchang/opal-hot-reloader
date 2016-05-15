@@ -33,9 +33,14 @@ Usage: opal-hot-reloader [options]
     -d, --directories x,y,z          comma separated directories to watch
 ```
 
+For a react.rb Rails you might call it below
+```
+opal-hot-reloader -d app/assets/javascripts,app/views/components
+```
+
 ### Client Setup
 
-Require in an opal file and start listening for changes:
+Require in an opal file (for opal-rails apps application.js.rb is a good place) and start listening for changes:
 ```ruby
 require 'opal_hot_reloader'
 OpalHotReloader.listen(25222, true)
