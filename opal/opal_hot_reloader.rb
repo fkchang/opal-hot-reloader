@@ -1,5 +1,7 @@
 require 'opal_hot_reloader/reactrb_patches'
 require 'opal-parser' # gives me 'eval', for hot-loading code
+require 'opal-jquery'
+require 'json'
 
 # Opal client to support hot reloading
 class OpalHotReloader
@@ -8,22 +10,40 @@ class OpalHotReloader
     host = `window.location.host`.sub(/:\d+/, '')
     host = '127.0.0.1' if host == ''
     ws_url = "#{host}:#{port}"
-    puts "Connecting to #{ws_url}"
-    `ws = new WebSocket('ws://' + #{ws_url});`
-    `console.log(ws);
-    
-    ws.onmessage = #{lambda { |e| reload(e) }}
-`
+    puts "Hot-Reloader connecting to #{ws_url}"
+    %x{
+      ws = new WebSocket('ws://' + #{ws_url});
+      // console.log(ws);
+      ws.onmessage = #{lambda { |e| reload(e) }}
+    }
   end
-  #  // ws.onmessage = #{lambda { |e| alert(`e.data`); eval(`e.data`) }}
-  def reload(e)
-    code = `e.data`
-    eval code
-    if @reload_post_callback
-      @reload_post_callback.call
-    else
-      puts "not reloading code"
 
+  def reload(e)
+    reload_request = JSON.parse(`e.data`)
+    puts "Received reload request: #{reload_request.inspect}"
+    if reload_request[:type] == "ruby"
+      puts "Reloading ruby #{reload_request[:filename]}"
+      eval reload_request[:source_code]
+      if @reload_post_callback
+        @reload_post_callback.call
+      else
+        puts "not reloading code"
+      end
+    end
+    if reload_request[:type] == "css"
+      url = reload_request[:url]
+      puts "Reloading CSS: #{url}"
+
+      # For now we'll just reload ALL css to dodge pipeline stuff
+      existing_styles = Element.find("link[rel=stylesheet]")
+      existing_styles.each do | existing_style |
+        # puts "Existing style: #{existing_style.inspect}"
+        new_style = existing_style.clone
+        # puts "New style: #{new_style.inspect}"
+        existing_style.after(new_style)
+        # existing_style.remove
+        `setTimeout(function(){ existing_style.$remove() }, 300)`
+      end
     end
   end
 
@@ -37,7 +57,7 @@ class OpalHotReloader
   def listen
     connect_to_websocket(@port)
   end
-  
+
   # convenience method to start a listen w/one line
   # @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
   # @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code. Defaults to false.
@@ -53,7 +73,7 @@ class OpalHotReloader
     else
       @server = OpalHotReloader.new(port)
     end
-    
+
     @server.listen
   end
 
