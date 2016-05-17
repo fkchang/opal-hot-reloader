@@ -65,6 +65,10 @@ This will open up a websocket from the client to the server on the given port. T
 
 Enjoy!
 
+## Screencasts
+
+* Quickie intro to opal-hot-reloader https://youtu.be/NQbzL7fNOks
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
