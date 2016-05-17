@@ -1,6 +1,6 @@
 # OpalHotReloader
 
-opal-hot-reloader is a hot reloader for Opal.  It has built in react.rb support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.
+opal-hot-reloader is a hot reloader for [Opal](http://opalrb.org).  It has built in [react.rb](http://reactrb.org) support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.
 
 ## Installation
 
@@ -38,6 +38,12 @@ For a react.rb Rails app, the command will be something like the below
 opal-hot-reloader -d app/assets/javascripts,app/views/components
 ```
 
+You may consider using [foreman](https://github.com/ddollar/foreman/)
+and starting the Rails server and hot reloader at the same time.  If
+you are doing react.rb development w/Rails, you may already be doing
+so with the Rails server and webpack.
+
+
 ### Client Setup
 
 Require in an opal file (for opal-rails apps application.js.rb is a good place) and start listening for changes:
@@ -54,7 +60,7 @@ If you are using the default port and your app is not a react.rb app then you ca
 ```
 OpalHotReloader.listen
 ```
-The parameters to OpalHotReloader.listen() are por
+
 This will open up a websocket from the client to the server on the given port. The server-side should already be running.
 
 Enjoy!
