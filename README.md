@@ -69,12 +69,13 @@ Enjoy!
 ## Vision
 
 Some of you might be asking?  Why do this, isn't this reinventing the
-wheel (which happens all the time in the Javascript BTW) by programs
-like webpack, etc.?
+wheel by programs like webpack, etc.? I should mention that
+reinventing the wheel seems happens all the time in the Javascript
+world.
 
 Yes and no. opal-hot-reloader is an "All Ruby(Opal)", self contained
 system, so if you're doing any kind of Opal frontend/Ruby backend
-webserver type of project,you will be able to just drop in
+webserver type of project, you will be able to just drop in
 opal-hot-reloader and it will work out of the box without having
 install/configure webpack or similar.
 
@@ -87,7 +88,7 @@ we want to work with the system. We want all the perks of Ruby and
 Rails without have to hand cobble it ourselves
 * We use webpack or similar for being a "1st class JS citizen".  This
 gives us access to all the frontend assets in npm, we want all those
-options.
+options and perks.
 
 While I do favor moving as much Javascript to webpack, following suit
 to React.js's lead, I see an "all webpack solution" for Opal apps
@@ -96,9 +97,9 @@ to most Rails programmers - who I think is the largest demographic
 likely to want to do Opal programming.
 
 While we wait for the other approaches to evolve and get implemented
-this solution is here and now.  It works with an "All Ruby" system, it
-works with a Rails app that is using webpack to provide react.js
-components to react.rb.
+this solution is here and works now.  It works with an "All Ruby"
+system, it works with a Rails app that is using webpack to provide
+react.js components to react.rb.
 
 ## Screencasts
 
