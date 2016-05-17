@@ -50,6 +50,7 @@ module OpalHotReloader
       @clients.each { |socket, client| client.send(file_contents)}
     end
 
+    PROGRAM = 'opal-hot-reloader'
     def loop
       listener = Listen.to(*@directories, only: %r{.rb$}) do |modified, added, removed|
         modified.each { |modified_file| send_updated_file(modified_file) }
@@ -58,7 +59,7 @@ module OpalHotReloader
         puts "removed absolute path: #{removed}"
       end
       listener.start
-      PROGRAM = 'opal-hot-reloader'
+
       puts "#{PROGRAM}: starting..."
       while (!$quit)
         run do |client|
@@ -69,7 +70,7 @@ module OpalHotReloader
             puts "PROGRAM:  message received: #{mess}"
           end
           client.onclose do
-            puts "#{PROGRAM:}:  client closed"
+            puts "#{PROGRAM}:  client closed"
           end
         end
         sleep 0.5
