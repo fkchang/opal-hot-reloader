@@ -1,6 +1,5 @@
 require 'opal_hot_reloader/reactrb_patches'
 require 'opal-parser' # gives me 'eval', for hot-loading code
-require 'opal-jquery'
 require 'json'
 
 # Opal client to support hot reloading
@@ -20,7 +19,6 @@ class OpalHotReloader
 
   def reload(e)
     reload_request = JSON.parse(`e.data`)
-    puts "Received reload request: #{reload_request.inspect}"
     if reload_request[:type] == "ruby"
       puts "Reloading ruby #{reload_request[:filename]}"
       eval reload_request[:source_code]
@@ -33,17 +31,24 @@ class OpalHotReloader
     if reload_request[:type] == "css"
       url = reload_request[:url]
       puts "Reloading CSS: #{url}"
-
-      # For now we'll just reload ALL css to dodge pipeline stuff
-      existing_styles = Element.find("link[rel=stylesheet]")
-      existing_styles.each do | existing_style |
-        # puts "Existing style: #{existing_style.inspect}"
-        new_style = existing_style.clone
-        # puts "New style: #{new_style.inspect}"
-        existing_style.after(new_style)
-        # existing_style.remove
-        `setTimeout(function(){ existing_style.$remove() }, 300)`
-      end
+      %x{
+        var toAppend = "t_hot_reload=" + (new Date()).getTime();
+        var links = document.getElementsByTagName("link");
+        for (var i = 0; i < links.length; i++) {
+          var link = links[i];
+          if (link.rel === "stylesheet" && link.href.indexOf(#{url}) >= 0) {
+            if (link.href.indexOf("?") === -1) {
+              link.href += "?" + toAppend;
+            } else {
+              if (link.href.indexOf("t_hot_reload") === -1) {
+                link.href += "&" + toAppend;
+              } else {
+                link.href = link.href.replace(/t_hot_reload=\d{13}/, toAppend)
+              }
+            }
+          }
+        }
+      }
     end
   end
 

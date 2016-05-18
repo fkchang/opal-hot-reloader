@@ -55,11 +55,17 @@ module OpalHotReloader
           source_code: file_contents
         }.to_json
       end
-      if modified_file =~ /\.s?css$/
+      if modified_file =~ /\.s?[ac]ss$/
+        # TODO: Switch from hard-wired path assumptions to using SASS/sprockets config
+        relative_path = Pathname.new(modified_file).relative_path_from(Pathname.new(Dir.pwd))
+        url = relative_path.to_s
+          .sub('public/','')
+          .sub('/sass/','/')
+          .sub(/\.s[ac]ss/, '.css')
         update = {
           type: 'css',
           filename: modified_file,
-          url: modified_file,
+          url: url
         }.to_json
       end
       if update
@@ -68,7 +74,7 @@ module OpalHotReloader
     end
 
     def loop
-      listener = Listen.to(*@directories, only: %r{\.(rb|s?css)$}) do |modified, added, removed|
+      listener = Listen.to(*@directories, only: %r{\.(rb|s?[ac]ss)$}) do |modified, added, removed|
         modified.each { |modified_file| send_updated_file(modified_file) }
         puts "modified absolute path: #{modified}"
         puts "added absolute path: #{added}"
