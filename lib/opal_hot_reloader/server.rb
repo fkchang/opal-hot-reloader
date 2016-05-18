@@ -3,11 +3,12 @@ require 'socket'
 require 'fiber'
 require 'listen'
 require 'optparse'
+require 'json'
 
 module OpalHotReloader
   # Most of this lifted from https://github.com/saward/Rubame
   class Server
-    
+
     def initialize(options)
       Socket.do_not_reverse_lookup
       @hostname = '0.0.0.0'
@@ -28,7 +29,7 @@ module OpalHotReloader
       @reading.push socket
       handshake = WebSocket::Handshake::Server.new
       client = Client.new(socket, handshake, self)
-      
+
       while line = socket.gets
         client.handshake << line
         break if client.handshake.finished?
@@ -45,14 +46,36 @@ module OpalHotReloader
     end
 
 
-    def send_updated_file modified_file
-      file_contents = File.read(modified_file)
-      @clients.each { |socket, client| client.send(file_contents)}
+    def send_updated_file(modified_file)
+      if modified_file =~ /\.rb$/
+        file_contents = File.read(modified_file)
+        update = {
+          type: 'ruby',
+          filename: modified_file,
+          source_code: file_contents
+        }.to_json
+      end
+      if modified_file =~ /\.s?[ac]ss$/
+        # TODO: Switch from hard-wired path assumptions to using SASS/sprockets config
+        relative_path = Pathname.new(modified_file).relative_path_from(Pathname.new(Dir.pwd))
+        url = relative_path.to_s
+          .sub('public/','')
+          .sub('/sass/','/')
+          .sub(/\.s[ac]ss/, '.css')
+        update = {
+          type: 'css',
+          filename: modified_file,
+          url: url
+        }.to_json
+      end
+      if update
+        @clients.each { |socket, client| client.send(update) }
+      end
     end
 
     PROGRAM = 'opal-hot-reloader'
     def loop
-      listener = Listen.to(*@directories, only: %r{.rb$}) do |modified, added, removed|
+      listener = Listen.to(*@directories, only: %r{\.(rb|s?[ac]ss)$}) do |modified, added, removed|
         modified.each { |modified_file| send_updated_file(modified_file) }
         puts "modified absolute path: #{modified}"
         puts "added absolute path: #{added}"

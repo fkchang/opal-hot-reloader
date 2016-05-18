@@ -18,4 +18,5 @@ OptionParser.new do |opts|
 end.parse!
 
 server = OpalHotReloader::Server.new(options)
+puts "Listening on port #{options[:port]}, watching for changes in #{options[:directories].join(', ')}"
 server.loop
