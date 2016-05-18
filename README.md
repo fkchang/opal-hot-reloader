@@ -1,6 +1,6 @@
 # OpalHotReloader
 
-opal-hot-reloader is a hot reloader for Opal.  It has built in react.rb support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.
+opal-hot-reloader is a hot reloader for [Opal](http://opalrb.org).  It has built in [react.rb](http://reactrb.org) support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.
 
 ## Installation
 
@@ -17,6 +17,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install opal_hot_reloader
+
 
 ## Usage
 
@@ -38,6 +39,12 @@ For a react.rb Rails app, the command will be something like the below
 opal-hot-reloader -d app/assets/javascripts,app/views/components
 ```
 
+You may consider using [foreman](https://github.com/ddollar/foreman/)
+and starting the Rails server and hot reloader at the same time.  If
+you are doing react.rb development w/Rails, you may already be doing
+so with the Rails server and webpack.
+
+
 ### Client Setup
 
 Require in an opal file (for opal-rails apps application.js.rb is a good place) and start listening for changes:
@@ -54,10 +61,49 @@ If you are using the default port and your app is not a react.rb app then you ca
 ```
 OpalHotReloader.listen
 ```
-The parameters to OpalHotReloader.listen() are por
+
 This will open up a websocket from the client to the server on the given port. The server-side should already be running.
 
 Enjoy!
+
+## Vision
+
+Some of you might be asking?  Why do this, isn't this reinventing the
+wheel by programs like webpack, etc.? I should mention that
+reinventing the wheel seems happens all the time in the Javascript
+world.
+
+Yes and no. opal-hot-reloader is an "All Ruby(Opal)", self contained
+system, so if you're doing any kind of Opal frontend/Ruby backend
+webserver type of project, you will be able to just drop in
+opal-hot-reloader and it will work out of the box without having
+install/configure webpack or similar.
+
+I believe it will be most advantageous for Opal to be able to straddle
+a hybrid approach where:
+
+* With Opal and Rails, we use the existing mechanism, sprockets, to
+serve up all the things it does in the "normal" Rails ecosystem. I.e
+we want to work with the system. We want all the perks of Ruby and
+Rails without have to hand cobble it ourselves
+* We use webpack or similar for being a "1st class JS citizen".  This
+gives us access to all the frontend assets in npm, we want all those
+options and perks.
+
+While I do favor moving as much Javascript to webpack, following suit
+to React.js's lead, I see an "all webpack solution" for Opal apps
+being only one of a few permutations, and not particularly appealing
+to most Rails programmers - who I think is the largest demographic
+likely to want to do Opal programming.
+
+While we wait for the other approaches to evolve and get implemented
+this solution is here and works now.  It works with an "All Ruby"
+system, it works with a Rails app that is using webpack to provide
+react.js components to react.rb.
+
+## Screencasts
+
+* Quickie intro to opal-hot-reloader https://youtu.be/NQbzL7fNOks
 
 ## Development
 
