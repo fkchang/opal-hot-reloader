@@ -101,6 +101,12 @@ this solution is here and works now.  It works with an "All Ruby"
 system, it works with a Rails app that is using webpack to provide
 react.js components to react.rb.
 
+### Goals
+* Bring the benefits of "leading edge web development" to All Ruby (via
+  Opal) full stack development.
+* Batteries included out of the box - make it (increasingingly) easy for Rubyists to enjoy the previous one.  This is a manifestation of the "Ruby Way" of making the programmer happy
+
+
 ## Screencasts
 
 * Quickie intro to opal-hot-reloader https://youtu.be/NQbzL7fNOks
