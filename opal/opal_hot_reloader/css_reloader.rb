@@ -9,7 +9,7 @@ class OpalHotReloader
       links = Native(`document.getElementsByTagName("link")`)
       (0..links.length-1).each { |i|
         link = links[i]
-        if link.rel == 'stylesheet' && link.href.index(url) >= 0 # find_matching_stylesheets(link.href, url)
+        if link.rel == 'stylesheet' && link.href.index(url) # # find_matching_stylesheets(link.href, url)
           if  link.href !~ /\?/
             link.href += "?#{to_append}"
           else
@@ -22,6 +22,7 @@ class OpalHotReloader
         end
       }
     end
+    
 
   end
 end
