@@ -1,5 +1,7 @@
 require 'opal_hot_reloader/reactrb_patches'
+require 'opal_hot_reloader/css_reloader'
 require 'opal-parser' # gives me 'eval', for hot-loading code
+
 require 'json'
 
 # Opal client to support hot reloading
@@ -29,26 +31,7 @@ class OpalHotReloader
       end
     end
     if reload_request[:type] == "css"
-      url = reload_request[:url]
-      puts "Reloading CSS: #{url}"
-      %x{
-        var toAppend = "t_hot_reload=" + (new Date()).getTime();
-        var links = document.getElementsByTagName("link");
-        for (var i = 0; i < links.length; i++) {
-          var link = links[i];
-          if (link.rel === "stylesheet" && link.href.indexOf(#{url}) >= 0) {
-            if (link.href.indexOf("?") === -1) {
-              link.href += "?" + toAppend;
-            } else {
-              if (link.href.indexOf("t_hot_reload") === -1) {
-                link.href += "&" + toAppend;
-              } else {
-                link.href = link.href.replace(/t_hot_reload=\d{13}/, toAppend)
-              }
-            }
-          }
-        }
-      }
+      @css_reloader.reload(reload_request, `document`)
     end
   end
 
@@ -57,6 +40,7 @@ class OpalHotReloader
   def initialize(port=25222, &reload_post_callback)
     @port = port
     @reload_post_callback  = reload_post_callback
+    @css_reloader = CssReloader.new
   end
   # Opens a websocket connection that evaluates new files and runs the optional @reload_post_callback
   def listen
