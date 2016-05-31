@@ -1,13 +1,15 @@
 # OpalHotReloader
 
-opal-hot-reloader is a hot reloader for [Opal](http://opalrb.org).  It has built in [react.rb](http://reactrb.org) support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.
+opal-hot-reloader is a hot reloader for [Opal](http://opalrb.org).  It has built in [react.rb](http://reactrb.org) support and can be extended to support an arbitrary hook to be run after code is evaluted.  It watches directories specified and when a file is modified it pushes the change via websocket to the client.  opal-hot-reloader reloader will reload the following without reloading the whole page and destroying any state the page has.
+- opal code
+- css (currently supporting Rack::Sass:Place and Rails asset pipeline)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'opal_hot_reloader'
+gem 'opal_hot_reloader' # currently on github only, gem coming soon
 ```
 
 And then execute:
@@ -102,9 +104,16 @@ system, it works with a Rails app that is using webpack to provide
 react.js components to react.rb.
 
 ### Goals
-* Bring the benefits of "leading edge web development" to All Ruby (via
-  Opal) full stack development.
-* Batteries included out of the box - make it (increasingingly) easy for Rubyists to enjoy the previous one.  This is a manifestation of the "Ruby Way" of making the programmer happy
+* Bring the benefits of "leading edge web development" to All Ruby
+  (via Opal) full stack development.  One of my efforts to be more
+  like Einstein in “Opening up yet another fragment of the frontier of
+  beauty” - i.e. share the joy.
+* Batteries included out of the box - make it (increasingingly) easy
+  for Rubyists to enjoy the previous goal.  This is a manifestation of
+  the "Ruby Way" of making the programmer happy
+* Try to add the least amount of additional dependencies to projects
+  it's used in
+
 
 
 ## Screencasts
