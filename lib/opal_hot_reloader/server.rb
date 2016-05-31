@@ -96,7 +96,7 @@ module OpalHotReloader
             puts "#{PROGRAM}:  client closed"
           end
         end
-        sleep 0.5
+        sleep 0.2
       end
     end
 
