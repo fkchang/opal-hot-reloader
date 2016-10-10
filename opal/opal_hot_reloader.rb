@@ -5,6 +5,7 @@ require 'opal-parser' # gives me 'eval', for hot-loading code
 require 'json'
 
 # Opal client to support hot reloading
+$eval_proc = proc { |s| eval s }
 class OpalHotReloader
 
   def connect_to_websocket(port)
@@ -23,7 +24,7 @@ class OpalHotReloader
     reload_request = JSON.parse(`e.data`)
     if reload_request[:type] == "ruby"
       puts "Reloading ruby #{reload_request[:filename]}"
-      eval reload_request[:source_code]
+      $eval_proc.call reload_request[:source_code]
       if @reload_post_callback
         @reload_post_callback.call
       else
