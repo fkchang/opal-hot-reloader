@@ -25,7 +25,7 @@ Or install it yourself as:
 
 ### Server Setup
 
-#### NOTE: currently doesn't work against opal 0.10.*, make sure to specify 0.9.* until this is fixed
+#### NOTE: fixed for Opal 0.10 as of commit d2dc849 - repull if not working for 0.10.0
 
 After adding `gem "opal_hot_loader"` to your gemfile, you must start the server-side part. This will allow websocket connections, and whenever a file is changed it will send it via the socket to listening clients.
 
