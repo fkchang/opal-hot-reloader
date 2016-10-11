@@ -9,7 +9,7 @@ opal-hot-reloader is a hot reloader for [Opal](http://opalrb.org).  It has built
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'opal_hot_reloader' # currently on github only, gem coming soon
+gem 'opal_hot_reloader'
 ```
 
 And then execute:
