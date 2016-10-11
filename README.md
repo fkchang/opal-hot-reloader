@@ -38,9 +38,11 @@ Usage: opal-hot-reloader [options]
     -d, --directories x,y,z          comma separated directories to watch
 ```
 
-For a react.rb Rails app, the command will be something like the below
+For a react.rb Rails app, opal-hot-reloader automatically includes app/assets/javascripts,app/views/components if they exist
+
+Example adding 2 directories
 ```
-opal-hot-reloader -d app/assets/javascripts,app/views/components
+opal-hot-reloader -d app/js,app/client/components
 ```
 
 You may consider using [foreman](https://github.com/ddollar/foreman/)
