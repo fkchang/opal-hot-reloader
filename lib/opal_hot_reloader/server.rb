@@ -9,11 +9,12 @@ module OpalHotReloader
   # Most of this lifted from https://github.com/saward/Rubame
   class Server
 
+    attr_reader :directories
     def initialize(options)
       Socket.do_not_reverse_lookup
       @hostname = '0.0.0.0'
       @port = options[:port]
-      @directories = options[:directories]
+      setup_directories(options)
 
       @reading = []
       @writing = []
@@ -22,6 +23,22 @@ module OpalHotReloader
 
       @socket = TCPServer.new(@hostname, @port)
       @reading.push @socket
+    end
+
+    # adds known directories automatically if they exist
+    # - rails js app/assets/javascripts
+    # - reactrb rails defaults app/views/components
+    # - you tell me and I'll add them
+    def setup_directories(options)
+      @directories = options[:directories] || []
+      [
+        'app/assets/javascripts',
+        'app/views/components'
+      ].each { |known_dir|
+        if !@directories.include?(known_dir) && File.exists?(known_dir)
+          @directories << known_dir
+        end
+      }
     end
 
     def accept
