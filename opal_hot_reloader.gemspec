@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Opal Hot reloader}
   spec.description   = %q{Opal Hot Reloader with reactrb suppot}
-  spec.homepage      = "https://github.com/fkchang/opal_hot_reloader"
+  spec.homepage      = "https://github.com/fkchang/opal-hot-reloader"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
