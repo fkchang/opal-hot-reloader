@@ -52,16 +52,18 @@ so with the Rails server and webpack.
 ### Client Setup
 
 Require in an opal file (for opal-rails apps application.js.rb is a good place) and start listening for changes:
+
+#### Note: OpalHotReloader.listen() deprecation
+OpalHotReloader.listen() used to take a 2nd Boolean parameter to signify a reactrb app.  This is deprecated and no longer needed.
+
 ```ruby
 require 'opal_hot_reloader'
 
 # @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
-# @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code. Defaults to false.
- run after evaluation the updated code
-OpalHotReloader.listen(25222, true)
+OpalHotReloader.listen(25222)
 ```
 
-If you are using the default port and your app is not a react.rb app then you can just call:
+If you are using the default port then you can just call:
 ```
 OpalHotReloader.listen
 ```
