@@ -50,20 +50,24 @@ class OpalHotReloader
 
   # convenience method to start a listen w/one line
   # @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
-  # @param reactrb [Boolean] whether or not the project runs reactrb. If true, the reactrb callback is automatically run after evaluation the updated code. Defaults to false.
+  # @deprecated reactrb - this flag no longer necessary and will be removed in gem release 0.2
   def self.listen(port=25222, reactrb=false)
     return if @server
     if reactrb
-      if defined? ::React
-        ReactrbPatches.patch!
-        @server = OpalHotReloader.new(port) { React::Component.force_update! }
-      else
-        puts "This is not a React.rb app.  No React.rb hooks will be applied"
-      end
+      warn "OpalHotReloader.listen(#{port}): reactrb flag is deprectated and will be removed in gem release 0.2. React will automatically be detected"
+    end
+    create_framework_aware_server(port)
+  end
+  # Automatically add in framework specific hooks
+
+  def self.create_framework_aware_server(port)
+    if defined? ::React
+      ReactrbPatches.patch!
+      @server = OpalHotReloader.new(port) { React::Component.force_update! }
     else
+      puts "No framework detected"
       @server = OpalHotReloader.new(port)
     end
-
     @server.listen
   end
 
