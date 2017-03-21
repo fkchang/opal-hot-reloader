@@ -1,0 +1,7 @@
+* 0.1.2
+- take out app/ as default directory to load, if doing a dedicated opal app, one is going to have to specify the dir1
+- add app/assets/stylesheets as a path to add if it exists
+* 0.1.1
+- Add popup to show errors on reloading
+* 0.1.0
+- Initial public version
