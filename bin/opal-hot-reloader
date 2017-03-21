@@ -3,7 +3,7 @@
 require 'bundler/setup'
 require "opal_hot_reloader/server"
 
-options = {:port => 25222, :directories => ['app']}
+options = {:port => 25222, :directories => []}
 OptionParser.new do |opts|
   opts.banner = "Usage: opal-hot-reloader [options]"
   
