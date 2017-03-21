@@ -28,7 +28,7 @@ class OpalHotReloader
       if @reload_post_callback
         @reload_post_callback.call
       else
-        puts "not reloading code"
+        puts "no reloading callback to call"
       end
     end
     if reload_request[:type] == "css"
