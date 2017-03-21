@@ -26,13 +26,14 @@ module OpalHotReloader
     end
 
     # adds known directories automatically if they exist
-    # - rails js app/assets/javascripts
+    # - rails js app/assets/javascripts app/assets/stylesheets
     # - reactrb rails defaults app/views/components
     # - you tell me and I'll add them
     def setup_directories(options)
       @directories = options[:directories] || []
       [
         'app/assets/javascripts',
+        'app/assets/stylesheets',
         'app/views/components'
       ].each { |known_dir|
         if !@directories.include?(known_dir) && File.exists?(known_dir)
