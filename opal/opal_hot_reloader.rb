@@ -24,7 +24,11 @@ class OpalHotReloader
     reload_request = JSON.parse(`e.data`)
     if reload_request[:type] == "ruby"
       puts "Reloading ruby #{reload_request[:filename]}"
-      $eval_proc.call reload_request[:source_code]
+      begin
+        $eval_proc.call reload_request[:source_code]
+      rescue
+        alert "OpalHotReloader RELOAD ERROR:\n\n#{$!}"
+      end
       if @reload_post_callback
         @reload_post_callback.call
       else
