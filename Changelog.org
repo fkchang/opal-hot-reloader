@@ -1,3 +1,5 @@
+* 0.1.3
+- handle Rails 5 asset pipeline css change
 * 0.1.2
 - take out app/ as default directory to load, if doing a dedicated opal app, one is going to have to specify the dir1
 - add app/assets/stylesheets as a path to add if it exists
