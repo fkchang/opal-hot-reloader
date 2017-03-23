@@ -74,6 +74,16 @@ This will open up a websocket from the client to the server on the given port. T
 
 Enjoy!
 
+#### Run only in development on Rails
+One way to run this only in development on Rails is to change your application.js.rb to application.js.rb.erb and add this to the bottom of the file
+
+```ruby
+<% if Rails.env.development? %>
+    require 'opal_hot_reloader'
+    OpalHotReloader.listen
+<% end %>
+```
+
 ## Vision
 
 Some of you might be asking?  Why do this, isn't this reinventing the
