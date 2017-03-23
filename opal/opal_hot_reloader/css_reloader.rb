@@ -30,7 +30,7 @@ class OpalHotReloader
       else
         # Rails asset pipeline match
         url_base = File.basename(url).sub(/\.s?css+/, '').sub(/\.s?css+/, '')
-        href_base = File.basename(href).sub(/\.self-.*.css.+/, '')
+        href_base = File.basename(href).sub(/\.self-?.*.css.+/, '')
         url_base == href_base
       end
     
