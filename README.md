@@ -70,6 +70,20 @@ If you are using the default port then you can just call:
 OpalHotReloader.listen
 ```
 
+#### Alerts
+
+![Reload Error Alert](images/reload_error.png)
+By default, if there is an error hot loading code, opal_hot_reloader
+will present an alert of the error. The following options can be used
+to turn the alerts on and off:
+
+```ruby
+OpalHotReloader.alerts_on!  # turns on alerts
+OpalHotReloader.alerts_off! # turns off alerts
+
+```
+
+
 This will open up a websocket from the client to the server on the given port. The server-side should already be running.
 
 Enjoy!
