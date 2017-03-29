@@ -73,6 +73,7 @@ OpalHotReloader.listen
 #### Alerts
 
 ![Reload Error Alert](images/reload_error.png)
+
 By default, if there is an error hot loading code, opal_hot_reloader
 will present an alert of the error. The following options can be used
 to turn the alerts on and off:
