@@ -11,13 +11,12 @@ class OpalHotReloader
   def connect_to_websocket(port)
     host = `window.location.host`.sub(/:\d+/, '')
     host = '127.0.0.1' if host == ''
+    protocol = `window.location.protocol` == 'https:' ? 'wss:' : 'ws:'
     ws_url = "#{host}:#{port}"
     puts "Hot-Reloader connecting to #{ws_url}"
-    %x{
-      ws = new WebSocket('ws://' + #{ws_url});
-      // console.log(ws);
-      ws.onmessage = #{lambda { |e| reload(e) }}
-    }
+    ws = `new WebSocket(#{protocol} + '//' + #{ws_url})`
+    `#{ws}.onmessage = #{lambda { |e| reload(e) }}`
+    every(5) { `#{ws}.send('')` }
   end
 
   def notify_error(reload_request)
