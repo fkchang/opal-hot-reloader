@@ -8,7 +8,7 @@ require 'json'
 $eval_proc = proc { |s| eval s }
 class OpalHotReloader
 
-  def connect_to_websocket(port)
+  def connect_to_websocket(port, ping)
     host = `window.location.host`.sub(/:\d+/, '')
     host = '127.0.0.1' if host == ''
     protocol = `window.location.protocol` == 'https:' ? 'wss:' : 'ws:'
@@ -16,7 +16,7 @@ class OpalHotReloader
     puts "Hot-Reloader connecting to #{ws_url}"
     ws = `new WebSocket(#{protocol} + '//' + #{ws_url})`
     `#{ws}.onmessage = #{lambda { |e| reload(e) }}`
-    every(5) { `#{ws}.send('')` }
+    `setInterval(function() { #{ws}.send('') }, #{ping * 1000})` if ping
   end
 
   def notify_error(reload_request)
@@ -73,22 +73,22 @@ end
 # convenience method to start a listen w/one line
 # @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
 # @deprecated reactrb - this flag no longer necessary and will be removed in gem release 0.2
-def self.listen(port=25222, reactrb=false)
+def self.listen(port=25222, reactrb=false, ping=nil)
   return if @server
   if reactrb
     warn "OpalHotReloader.listen(#{port}): reactrb flag is deprectated and will be removed in gem release 0.2. React will automatically be detected"
   end
-  create_framework_aware_server(port)
+  create_framework_aware_server(port, ping)
 end
 # Automatically add in framework specific hooks
 
-def self.create_framework_aware_server(port)
+def self.create_framework_aware_server(port, ping)
   if defined? ::React
     ReactrbPatches.patch!
-    @server = OpalHotReloader.new(port) { React::Component.force_update! }
+    @server = OpalHotReloader.new(port, ping) { React::Component.force_update! }
   else
     puts "No framework detected"
-    @server = OpalHotReloader.new(port)
+    @server = OpalHotReloader.new(port, ping)
   end
   @server.listen
 end
