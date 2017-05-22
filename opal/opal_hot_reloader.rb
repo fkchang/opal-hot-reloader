@@ -8,7 +8,7 @@ require 'json'
 $eval_proc = proc { |s| eval s }
 class OpalHotReloader
 
-  def connect_to_websocket(port, ping)
+  def connect_to_websocket(port)
     host = `window.location.host`.sub(/:\d+/, '')
     host = '127.0.0.1' if host == ''
     protocol = `window.location.protocol` == 'https:' ? 'wss:' : 'ws:'
@@ -16,7 +16,7 @@ class OpalHotReloader
     puts "Hot-Reloader connecting to #{ws_url}"
     ws = `new WebSocket(#{protocol} + '//' + #{ws_url})`
     `#{ws}.onmessage = #{lambda { |e| reload(e) }}`
-    `setInterval(function() { #{ws}.send('') }, #{ping * 1000})` if ping
+    `setInterval(function() { #{ws}.send('') }, #{@ping * 1000})` if @ping
   end
 
   def notify_error(reload_request)
@@ -60,10 +60,11 @@ class OpalHotReloader
 
   # @param port [Integer] opal hot reloader port to connect to
   # @param reload_post_callback [Proc] optional callback to be called after re evaluating a file for example in react.rb files we want to do a React::Component.force_update!
-def initialize(port=25222, &reload_post_callback)
+def initialize(port=25222, ping=nil, &reload_post_callback)
   @port = port
   @reload_post_callback  = reload_post_callback
   @css_reloader = CssReloader.new
+  @ping = ping
 end
 # Opens a websocket connection that evaluates new files and runs the optional @reload_post_callback
 def listen
