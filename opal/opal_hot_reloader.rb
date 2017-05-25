@@ -11,13 +11,12 @@ class OpalHotReloader
   def connect_to_websocket(port)
     host = `window.location.host`.sub(/:\d+/, '')
     host = '127.0.0.1' if host == ''
+    protocol = `window.location.protocol` == 'https:' ? 'wss:' : 'ws:'
     ws_url = "#{host}:#{port}"
     puts "Hot-Reloader connecting to #{ws_url}"
-    %x{
-      ws = new WebSocket('ws://' + #{ws_url});
-      // console.log(ws);
-      ws.onmessage = #{lambda { |e| reload(e) }}
-    }
+    ws = `new WebSocket(#{protocol} + '//' + #{ws_url})`
+    `#{ws}.onmessage = #{lambda { |e| reload(e) }}`
+    `setInterval(function() { #{ws}.send('') }, #{@ping * 1000})` if @ping
   end
 
   def notify_error(reload_request)
@@ -61,10 +60,11 @@ class OpalHotReloader
 
   # @param port [Integer] opal hot reloader port to connect to
   # @param reload_post_callback [Proc] optional callback to be called after re evaluating a file for example in react.rb files we want to do a React::Component.force_update!
-def initialize(port=25222, &reload_post_callback)
+def initialize(port=25222, ping=nil, &reload_post_callback)
   @port = port
   @reload_post_callback  = reload_post_callback
   @css_reloader = CssReloader.new
+  @ping = ping
 end
 # Opens a websocket connection that evaluates new files and runs the optional @reload_post_callback
 def listen
@@ -74,22 +74,22 @@ end
 # convenience method to start a listen w/one line
 # @param port [Integer] opal hot reloader port to connect to. Defaults to 25222 to match opal-hot-loader default
 # @deprecated reactrb - this flag no longer necessary and will be removed in gem release 0.2
-def self.listen(port=25222, reactrb=false)
+def self.listen(port=25222, reactrb=false, ping=nil)
   return if @server
   if reactrb
     warn "OpalHotReloader.listen(#{port}): reactrb flag is deprectated and will be removed in gem release 0.2. React will automatically be detected"
   end
-  create_framework_aware_server(port)
+  create_framework_aware_server(port, ping)
 end
 # Automatically add in framework specific hooks
 
-def self.create_framework_aware_server(port)
+def self.create_framework_aware_server(port, ping)
   if defined? ::React
     ReactrbPatches.patch!
-    @server = OpalHotReloader.new(port) { React::Component.force_update! }
+    @server = OpalHotReloader.new(port, ping) { React::Component.force_update! }
   else
     puts "No framework detected"
-    @server = OpalHotReloader.new(port)
+    @server = OpalHotReloader.new(port, ping)
   end
   @server.listen
 end

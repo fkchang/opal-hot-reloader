@@ -108,7 +108,7 @@ module OpalHotReloader
             puts "#{PROGRAM}:  client open"
           end
           client.onmessage do |mess|
-            puts "PROGRAM:  message received: #{mess}"
+            puts "PROGRAM:  message received: #{mess}" unless mess == ''
           end
           client.onclose do
             puts "#{PROGRAM}:  client closed"
