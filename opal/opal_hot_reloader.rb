@@ -86,9 +86,15 @@ end
 def self.create_framework_aware_server(port, ping)
   if defined? ::React
     ReactrbPatches.patch!
-    @server = OpalHotReloader.new(port, ping) { React::Component.force_update! }
+    @server = OpalHotReloader.new(port, ping) do
+      if defined?(Hyperloop) && 
+         defined?(Hyperloop::ClientDrivers) &&
+         Hyperloop::ClientDrivers.respond_to?(:initialize_client_drivers_on_boot)
+        Hyperloop::ClientDrivers.initialize_client_drivers_on_boot 
+      end
+      React::Component.force_update!
+    end 
   else
-    puts "No framework detected"
     @server = OpalHotReloader.new(port, ping)
   end
   @server.listen
