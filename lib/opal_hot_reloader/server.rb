@@ -66,7 +66,7 @@ module OpalHotReloader
 
     def send_updated_file(modified_file)
       if modified_file =~ /\.rb$/
-        file_contents = File.read(modified_file)
+        file_contents = File.read(modified_file).force_encoding(Encoding::UTF_8)
         update = {
           type: 'ruby',
           filename: modified_file,
