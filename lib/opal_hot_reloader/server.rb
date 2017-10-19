@@ -93,7 +93,7 @@ module OpalHotReloader
 
     PROGRAM = 'opal-hot-reloader'
     def loop
-      listener = Listen.to(*@directories, only: %r{\.(rb|s?[ac]ss)$}) do |modified, added, removed|
+      listener = Listen.to(*@directories, only: %r{\.(rb(\.erb)?|s?[ac]ss)$}) do |modified, added, removed|
         modified.each { |modified_file| send_updated_file(modified_file) }
         puts "modified absolute path: #{modified}"
         puts "added absolute path: #{added}"
