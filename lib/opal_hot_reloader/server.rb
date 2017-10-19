@@ -65,7 +65,7 @@ module OpalHotReloader
 
 
     def send_updated_file(modified_file)
-      if modified_file =~ /\.rb$/
+      if modified_file =~ /\.rb(\.erb)?$/
         file_contents = File.read(modified_file).force_encoding(Encoding::UTF_8)
         update = {
           type: 'ruby',
@@ -93,7 +93,7 @@ module OpalHotReloader
 
     PROGRAM = 'opal-hot-reloader'
     def loop
-      listener = Listen.to(*@directories, only: %r{\.(rb|s?[ac]ss)$}) do |modified, added, removed|
+      listener = Listen.to(*@directories, only: %r{\.(rb(\.erb)?|s?[ac]ss)$}) do |modified, added, removed|
         modified.each { |modified_file| send_updated_file(modified_file) }
         puts "modified absolute path: #{modified}"
         puts "added absolute path: #{added}"
