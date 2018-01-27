@@ -1,3 +1,5 @@
+* 0.1.5
+- support hyperloop patching in Opal 0.11
 * 0.1.4
 - make alerts configurable via OpalHotReloader.alerts_off!/OpalHotReloader.alerts_on!
 * 0.1.3
