@@ -1,3 +1,7 @@
+* 0.1.6
+- hyperloop ping tweaks
+- UTF8 encoding
+- support opal 0.11
 * 0.1.5
 - support hyperloop patching in Opal 0.11
 * 0.1.4
