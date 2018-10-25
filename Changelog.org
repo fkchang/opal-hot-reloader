@@ -1,3 +1,6 @@
+* 0.1.7
+- update to be compatible with latest hyperloop
+- made compatible w/react error boundaries
 * 0.1.6
 - hyperloop ping tweaks
 - UTF8 encoding
